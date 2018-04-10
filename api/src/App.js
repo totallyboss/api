@@ -6,34 +6,34 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      test: 'hi',
-      pictures: [],
+      redirects: [],
     };
   };
 
   componentDidMount() {
-
-    fetch('https://randomuser.me/api/?results=500')
+    fetch('https://api.myjson.com/bins/16a7zr')
     .then(results => {
       return results.json();
     }).then(data => {
-      let picasso = data.results.map((pic) => {
+      let rows = data.results[0].matchRules.map((redirect) => {
         return (
-          <div key={pic.results}>
-            <img src={pic.picture.large}/>
+          <div key={redirect.name}>
+            <h2>Redirect</h2>
+            <p>{redirect.name}</p>
+            <p>{redirect.matches[0].matchValue}</p>
+            <p>{redirect.redirectURL}</p>
           </div>
         )
       });
 
-      this.setState({pictures: picasso});
-      console.log("state", this.state.pictures);
+      this.setState({redirects: rows});
     });
   };
 
   render() {
     return (
       <div className="container">
-        {this.state.pictures}
+        {this.state.redirects}
       </div>
     );
   };
